@@ -1,0 +1,73 @@
+import collections
+
+
+## Import the file as a readable list
+## I could've done it in a lot fewer lines using regex, but what A Level student actually knows regex? (not me if you couldn't tell
+## p.s. This leaves an empty list item when it's stored, but it wasn't enough of a problem for me to try and solve
+
+pas = []
+f = open(input_file,"r")
+for item in f:
+    temp1 = []
+    string=""
+    for character in item:
+        if character== "-":
+            temp1.append(string)
+            string=""
+        elif character == " ":
+            temp1.append(string)
+            string=""
+        elif character == ":":
+            temp1.append(string)
+            string=""
+        else:
+            string+=character
+    temp1.append(string)
+    pas.append(temp1)
+f.close()
+
+
+#setup for counting the valid passwords
+
+validnumbers = 0
+validnumbers1 = 0
+
+for item in pas:
+
+    #collect all the data you need for the loop
+    valid = False
+    valid1= False
+    loc1 = int(item[0])-1
+    loc2 = int(item[1])-1
+    letter = item[2]
+    word = list(item[4])
+
+    #remove that pesky new line, in case the code is looking for an n in the password
+    empty = word.pop()
+
+    # the most simple way I could think of adding up the letters. If it's a valid letter, +1
+    count = -1
+    for char in word:
+        if char == letter:
+            count += 1
+    if count >= loc1 and count <= loc2:
+        valid1 = True
+
+    # using boolean logic to add one every time, because otherwise it will +1 for every correct letter    
+    if valid1:
+        validnumbers1+=1
+        valid1=False
+
+    # there is no xor operator, so this is the best i could do    
+    if (word[loc1] == letter and word[loc2] != letter):
+        valid = True
+    elif (word[loc2] == letter and word[loc1] != letter):
+        valid = True
+
+    if valid:
+        validnumbers+=1
+        valid =False
+        
+#output the results
+print("Question 1: " +str(validnumbers1)) 
+print("Question 2: " +str(validnumbers))
