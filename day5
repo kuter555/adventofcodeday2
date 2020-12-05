@@ -1,0 +1,33 @@
+import re, math
+seats = []
+seat_ids = []
+
+with open("Day5Inputs.txt") as f:
+    for line in f:
+        seats.append(line.strip())
+
+for seat in seats:
+    pt1, pt2 = seat[:7], seat[7:]
+    rowval, colval = 0, 0
+
+    #literally just learnt lambda yesterday, wanted to use it
+    binary = lambda _cur, _let: True if re.match(_let, _cur) else False
+
+    for i in range(len(pt1)):    
+        if binary(pt1[i], '[B]'):
+            rowval += math.pow(2, (6-i))
+
+    for i in range(len(pt2)):
+        if binary(pt2[i], '[R]'):
+            colval += math.pow(2, (2-i))
+    
+    seat_ids.append(int(rowval*8+colval))
+
+
+seat_ids.sort()
+print(f"Part 1: {seat_ids[len(seat_ids)-1]}")
+
+for i in range(len(seat_ids)-seat_ids[0]):
+    if seat_ids[i] != i+seat_ids[0]:
+        print(f"Part 2: {seat_ids[i]-1}")
+        break
