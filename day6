@@ -1,0 +1,30 @@
+import collections
+from functools import reduce
+
+
+answers=  []
+person = []
+with open("Day6Inputs.txt") as file:
+    for row in file:
+        person.append(row.strip().split(" "))
+        if len(row.strip()) == 0:
+            person.pop()
+            answers.append(reduce(lambda n, m: n + m, person))            
+            person = []
+
+val = 0
+val2 = 0
+for item in answers:
+    _cur = ""
+    for thing in item:
+        _cur += thing
+    _dif = collections.Counter(_cur)
+    val+=len(_dif)
+    _dif = list(_dif.items())
+    for value in _dif:
+        if value[1] == len(item):
+            val2 += 1
+    
+
+print(f"Part 1: {val}")
+print(f"Part 2: {val2}")
